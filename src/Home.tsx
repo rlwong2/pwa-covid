@@ -1,7 +1,7 @@
 import React from "react";
 
 const Home: React.FC = () => (
-  <h1>Welcome to your PWA!</h1>
+  <h1>COVID-19 Tracker</h1>
 );
 
 export default Home;
