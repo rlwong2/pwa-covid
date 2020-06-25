@@ -1,58 +1,47 @@
-import React from 'react';
-import styled from 'styled-components';
-import { Chart } from 'react-charts';
+import React, { useMemo } from 'react';
+import Paper from '@material-ui/core/Paper';
+import {
+  Chart,
+  LineSeries,
+} from '@devexpress/dx-react-chart-material-ui';
+import { Animation } from '@devexpress/dx-react-chart';
+import { Tooltip, ArgumentAxis } from '@devexpress/dx-react-chart-material-ui';
+
+import moment from 'moment';
+import originalData from './data';
 
 export interface Series {
     label: string,
     data: Array<string>,
 }
 
-const GraphBox = styled.div`
-  width: 100vw;
-  height: 35vh;
-`
-
-export default function Line (currentData: any) {
-
-    const graphData = function(arr: Array<any>) {
-        const result: object[] = [];
-        const series: Series = {
-            label: 'Illinois',
-            data: []
-        }
-
-        for (var i of arr) {
-            let pair: any = {}
-            pair[i.date] = i.total;
-            series.data.push(pair);
-        }
-
-        result.push(series)
-
-        console.log(result)
-
-        return result;
-    }
-
-  const series = React.useMemo(
-    () => ({
-      showPoints: false
-    }),
-    []
-  )
+export default function Graph () {
   
-  const axes = React.useMemo(
-    () => [
-      { primary: true, type: 'time', position: 'bottom' },
-      { type: 'linear', position: 'left' }
-    ],
-    []
-  )
+  const chartData = useMemo(() => {
+    let parsed = originalData.map((item: any) => {
+      const date = moment(item.date,'YYYYMMDD').format()
+      return {
+        x: date,
+        y: item.total
+      }
+    })
+    console.log(parsed)
+    return parsed.reverse();
+  }, []);
 
   return (
-    <div>
-        Graph<br />
-        <Chart data={currentData} series={series} axes={axes} />
-    </div>
-  )
+    <Paper>
+        <Chart
+          data={chartData}
+        >
+          <Animation />
+          <Tooltip />
+          <ArgumentAxis />
+          <LineSeries
+            valueField="y"
+            argumentField="x"
+          />
+        </Chart>
+      </Paper>
+  );
 }

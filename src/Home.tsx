@@ -1,7 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 
-import Graph from './Graph';
+import Graph from './Graph2';
 
 const Home: React.FC = (data: any) => (
   <div>
