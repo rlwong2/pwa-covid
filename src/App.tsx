@@ -2,19 +2,54 @@ import React, { lazy, Suspense, useState, useEffect } from "react";
 import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 import axios from 'axios';
 
-const About = lazy(() => import("./About"));
-const Home = lazy(() => import("./Home"));
+import About from './About';
+import Home from './Home';
+
+// const About = lazy(() => import("./About"));
+// const Home = lazy(() => import("./Home"));
+
+export interface Series {
+  label: string,
+  data: Array<object>,
+}
+
+export interface DataPoint {
+  x: string,
+  y: number
+}
 
 const App: React.FC = () => {
 
-  const [ location, setLocation ] = useState('il');
-  const [ data, setData ] = useState([]);
+  const [ location, setLocation ] = useState<string>('');
+  const [ data, setData ] = useState<object[]>([]);
+  const [ currentData, setCurrentData ] = useState<any>([]);
 
   useEffect(() => {
+    setLocation('il')
+
     axios.get(`https://covidtracking.com/api/v1/states/${location}/daily.json`)
       .then((res) => {
         setData(res.data)
-        console.log(res.data)
+
+        const result: Array<object> = [];
+        const series: Series = {
+            label: 'Illinois',
+            data: []
+        }
+
+        for (var i of res.data) {
+            let pair: DataPoint = {
+              x: i.date,
+              y: i.total
+            }
+            series.data.push(pair);
+        }
+
+        result.push(series)
+        console.log(result)
+
+        setCurrentData(result)
+
       })
       .catch((err) => console.log(err))
   }, [])
@@ -36,8 +71,8 @@ const App: React.FC = () => {
           <Route path="/about">
             <About />
           </Route>
-          <Route path="/">
-            <Home />
+          <Route path="/"> 
+            <Home {...currentData} />
           </Route>
         </Switch>
       </Suspense>
