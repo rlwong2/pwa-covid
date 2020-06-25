@@ -1,9 +1,10 @@
-import React, { lazy, Suspense, useState, useEffect } from "react";
-import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
+import React, { useState, useEffect } from "react";
 import axios from 'axios';
+import moment from 'moment';
 
-import About from './About';
 import Home from './Home';
+import originalData from './data'
+
 
 // const About = lazy(() => import("./About"));
 // const Home = lazy(() => import("./Home"));
@@ -20,63 +21,43 @@ export interface DataPoint {
 
 const App: React.FC = () => {
 
-  const [ location, setLocation ] = useState<string>('');
-  const [ data, setData ] = useState<object[]>([]);
-  const [ currentData, setCurrentData ] = useState<any>([]);
+  const [ location, setLocation ] = useState<string>('il');
+  const [ data, setData ] = useState<any>([]);
 
   useEffect(() => {
-    setLocation('il')
-
     axios.get(`https://covidtracking.com/api/v1/states/${location}/daily.json`)
       .then((res) => {
-        setData(res.data)
 
-        const result: Array<object> = [];
-        const series: Series = {
-            label: 'Illinois',
-            data: []
-        }
-
-        for (var i of res.data) {
-            let pair: DataPoint = {
-              x: i.date,
-              y: i.total
+        const chartData = () => {
+          const parsed = originalData.map((item: any) => {
+            let date = moment(item.date,'YYYYMMDD').format();
+            let obj = {
+              x: date, 
+              y: item.total
             }
-            series.data.push(pair);
+
+            return obj
+          })
+          let chart = [
+            {
+              label: 'Illinois',
+              data: parsed
+            }
+          ]
+          console.log(chart)
+          return chart
         }
 
-        result.push(series)
-        console.log(result)
-
-        setCurrentData(result)
+        setData(chartData)
 
       })
       .catch((err) => console.log(err))
-  }, [])
+  }, [ location ])
 
   return(
-    <Router>
-      <Suspense fallback={<div>Loading...</div>}>
-        <nav>
-          <ul>
-            <li>
-              <Link to="/">Home</Link>
-            </li>
-            <li>
-              <Link to="/about">About</Link>
-            </li>
-          </ul>
-        </nav>
-        <Switch>
-          <Route path="/about">
-            <About />
-          </Route>
-          <Route path="/"> 
-            <Home {...currentData} />
-          </Route>
-        </Switch>
-      </Suspense>
-    </Router>
+    <div>
+      {data.length > 0 && <Home {...data} />}
+    </div>
 )};
 
 export default App;

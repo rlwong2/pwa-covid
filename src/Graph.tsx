@@ -6,27 +6,8 @@ export interface Series {
     data: Array<string>,
 }
 
-export default function Line (currentData: any) {
-
-    const graphData = function(arr: Array<any>) {
-        const result: object[] = [];
-        const series: Series = {
-            label: 'Illinois',
-            data: []
-        }
-
-        for (var i of arr) {
-            let pair: any = {}
-            pair[i.date] = i.total;
-            series.data.push(pair);
-        }
-
-        result.push(series)
-
-        console.log(result)
-
-        return result;
-    }
+export default function Graph (data: any) {
+  // const chartData = React.useMemo(() => data, [])
 
   const series = React.useMemo(
     () => ({
@@ -34,19 +15,44 @@ export default function Line (currentData: any) {
     }),
     []
   )
-  
+
   const axes = React.useMemo(
     () => [
-      { primary: true, type: 'linear', position: 'bottom' },
-      { type: 'linear', position: 'left' }
+      { primary: true, type: 'time', position: 'bottom' },
+      { type: 'linear', position: 'left' },
     ],
     []
   )
 
+  const getSeriesStyle = React.useCallback(
+    () => ({
+      transition: 'all .5s ease'
+    }),
+    []
+  )
+
+  const getDatumStyle = React.useCallback(
+    () => ({
+      transition: 'all .5s ease'
+    }),
+    []
+  )
+
   return (
-    <div>
-        Graph<br />
-        <Chart data={currentData} series={series} axes={axes} />
+    <div
+      style={{
+        width: '90vw',
+        height: '300px',
+      }}
+    >
+      <Chart
+        data={data}
+        axes={axes}
+        series={series}
+        getSeriesStyle={getSeriesStyle}
+        getDatumStyle={getDatumStyle}
+        tooltip
+      />
     </div>
   )
 }

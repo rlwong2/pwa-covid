@@ -3,15 +3,15 @@ import PropTypes from "prop-types";
 
 import Graph from './Graph';
 
-const Home: React.FC = (currentData: any) => (
+const Home: React.FC = (data: any) => (
   <div>
     <h1>COVID-19 Tracker</h1>
-    <Graph {...currentData} />
+    <Graph {...data}/>
   </div>
 );
 
 Home.propTypes = {
-  currentData: PropTypes.array.isRequired,
+  data: PropTypes.array.isRequired,
 }
 
 export default Home;
