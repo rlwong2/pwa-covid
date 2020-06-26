@@ -1,4 +1,5 @@
 import React from 'react';
+
 import originalData from './data'
 import moment from 'moment';
 
@@ -8,6 +9,27 @@ export interface Series {
     label: string,
     data: Array<string>,
 }
+
+const defs = (
+  <defs>
+    <linearGradient id="0" x1="0" x2="0" y1="1" y2="0">
+      <stop offset="0%" stopColor="#17EAD9" />
+      <stop offset="100%" stopColor="#6078EA" />
+    </linearGradient>
+    <linearGradient id="1" x1="0" x2="0" y1="1" y2="0">
+      <stop offset="0%" stopColor="#FCE38A" />
+      <stop offset="100%" stopColor="#F38181" />
+    </linearGradient>
+    <linearGradient id="2" x1="0" x2="0" y1="1" y2="0">
+      <stop offset="0%" stopColor="#42E695" />
+      <stop offset="100%" stopColor="#3BB2B8" />
+    </linearGradient>
+    <linearGradient id="3" x1="0" x2="0" y1="1" y2="0">
+      <stop offset="0%" stopColor="#F4Ea0A" />
+      <stop offset="100%" stopColor="#df4081" />
+    </linearGradient>
+  </defs>
+)
 
 export default function Graph (data: any) {
   const chartData = React.useMemo(() => {
