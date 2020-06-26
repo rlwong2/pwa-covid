@@ -94,6 +94,7 @@ export default function Graph (data: any) {
         getSeriesStyle={getSeriesStyle}
         getDatumStyle={getDatumStyle}
         tooltip
+        dark
       />
     </div>
   )

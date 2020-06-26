@@ -20,6 +20,13 @@ export interface DataPoint {
   y: number
 }
 
+const AppBox = styled.div`
+  height: 100%;
+  width: 100%;
+  margin: 0 5%;
+  padding 0;
+`
+
 const App: React.FC = () => {
 
   const [ location, setLocation ] = useState<string>('il');
@@ -36,10 +43,10 @@ const App: React.FC = () => {
   }, [ status ])
 
   return(
-    <div>
+    <AppBox>
       {data.length === 0 && <div>Loading</div>}
       {data.length > 0 && <Home {...data} />}
-    </div>
+    </AppBox>
 )};
 
 export default App;

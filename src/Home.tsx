@@ -5,8 +5,8 @@ import styled from 'styled-components';
 import Graph from './Graph';
 
 const HomeBox = styled.div`
-  width: 95vw;
-  height: 35vw;
+  width: 95%;
+  max-width: 640px;
 `
 
 const Home: React.FC = (data: any) => (
