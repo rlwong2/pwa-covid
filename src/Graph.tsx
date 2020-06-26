@@ -1,4 +1,7 @@
 import React from 'react';
+import originalData from './data'
+import moment from 'moment';
+
 import { Chart } from 'react-charts';
 
 export interface Series {
@@ -7,7 +10,24 @@ export interface Series {
 }
 
 export default function Graph (data: any) {
-  // const chartData = React.useMemo(() => data, [])
+  const chartData = React.useMemo(() => {
+
+    const parsed = originalData.map((item: any) => {
+      let date = moment(item.date,'YYYYMMDD');
+      let obj = [ date, item.total ]
+
+      return obj
+    })
+
+    let chart = [
+      {
+        label: 'Illinois',
+        data: parsed
+      }
+    ]
+    console.log(chart)
+    return chart;
+  }, [ data ])
 
   const series = React.useMemo(
     () => ({
@@ -46,7 +66,7 @@ export default function Graph (data: any) {
       }}
     >
       <Chart
-        data={data}
+        data={chartData}
         axes={axes}
         series={series}
         getSeriesStyle={getSeriesStyle}

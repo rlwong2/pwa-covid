@@ -1,7 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 
-import Graph from './Graph2';
+import Graph from './Graph';
 
 const Home: React.FC = (data: any) => (
   <div>
@@ -9,9 +9,5 @@ const Home: React.FC = (data: any) => (
     <Graph {...data}/>
   </div>
 );
-
-Home.propTypes = {
-  data: PropTypes.array.isRequired,
-}
 
 export default Home;

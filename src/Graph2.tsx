@@ -4,8 +4,8 @@ import {
   Chart,
   LineSeries,
 } from '@devexpress/dx-react-chart-material-ui';
-import { Animation } from '@devexpress/dx-react-chart';
-import { Tooltip, ArgumentAxis } from '@devexpress/dx-react-chart-material-ui';
+import { Animation, ArgumentScale, EventTracker } from '@devexpress/dx-react-chart';
+import { Tooltip, ArgumentAxis, ValueAxis } from '@devexpress/dx-react-chart-material-ui';
 
 import moment from 'moment';
 import originalData from './data';
@@ -31,16 +31,17 @@ export default function Graph () {
 
   return (
     <Paper>
-        <Chart
-          data={chartData}
-        >
+        <Chart data={chartData}>
           <Animation />
-          <Tooltip />
-          <ArgumentAxis />
+          <ArgumentAxis showLabels={false} />
+          <ValueAxis />
           <LineSeries
+            name='line'
             valueField="y"
             argumentField="x"
           />
+          <EventTracker />
+          <Tooltip />
         </Chart>
       </Paper>
   );
